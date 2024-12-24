@@ -1,0 +1,15 @@
+accelerate==1.2.1
+colorama==0.4.6
+fastchat==0.1.0
+langchain==0.3.13
+langchain_core==0.3.28
+langchain_openai==0.2.14
+lightning==2.2.3
+Pillow==11.0.0
+pydantic==2.10.4
+Requests==2.32.3
+sentence_transformers==2.5.1
+torch==2.2.1+cu118
+torch_geometric==2.6.1
+transformers==4.47.1
+vertexai==1.71.1

@@ -1,0 +1,96 @@
+Paper title: Time Will Tell: New Outlooks and A Baseline for Temporal Multi-View 3D Object Detection.
+Abstract: While recent camera-only 3D detection methods leverage multiple timesteps, the limited history they use significantly hampers the extent to which temporal fusion can improve object perception. Observing that existing works' fusion of multi-frame images are instances of temporal stereo matching, we find that performance is hindered by the interplay between 1) the low granularity of matching resolution and 2) the sub-optimal multi-view setup produced by limited history usage. Our theoretical and empirical analysis demonstrates that the optimal temporal difference between views varies significantly for different pixels and depths, making it necessary to fuse many timesteps over long-term history. Building on our investigation, we propose to generate a cost volume from a long history of image observations, compensating for the coarse but efficient matching resolution with a more optimal multi-view matching setup. Further, we augment the per-frame monocular depth predictions used for long-term, coarse matching with short-term, fine-grained matching and find that long and short term temporal fusion are highly complementary. While maintaining high efficiency, our framework sets new state-of-the-art on nuScenes, achieving first place on the test set and outperforming previous best art by 5.2% mAP and 3.7% NDS on the validation set. Code will be released here: https://github.com/Divadi/SOLOFusion.
+
+Review 1: 
+Summary Of The Paper:
+In this paper, the authors study vision only 3D object detection for autonomous driving. First, the authors formulate the recent multi-frame multi-view methods as temporal stereo matching. Then localisation potential is proposed and analysed theoretically and empirically to show the necessity of larger time window. To handle the efficiency of long term computation, coarser resolution feature maps are used in the long term and finer resolution in the short term. In the experiments, the proposed method outperforms others in nuScenes leaderboard.
+
+Strength And Weaknesses:
+Strengths:
+
+New formulation of the exiting multi-view, multi-frame image based 3D detection methods.
+Use both theoretical and empirical analysis by introducing localisation potential, to unveil the importance of longer time horizon.
+Impressive performance in nuScenes leaderboard.
+Writing is clear and easy to follow.
+Weakness:
+
+I have one question regarding the experimental analysis. Did the authors analyse the performance improvement for objects with different speed? It is interesting to see the impact of long term fusion on static, slowly moving and fast moving objects.
+
+Clarity, Quality, Novelty And Reproducibility:
+Clarity, Quality, Novelty:
+
+As mentioned in the strengths, this paper is organised well and has several novel contributions. Overall, this is a high-quality paper.
+
+Reproducibility:
+
+From Section 5, it seems not very difficult to reproduce the paper. However, we are still look forward to the officially released code.
+
+Summary Of The Review:
+I would like to accept this paper. If the authors can provide more analysis for the method (for example, the question I have in the weakness), I tend to further increase my rating.
+
+
+Review 2: 
+Summary Of The Paper:
+This paper investigate how temporal context should be used for vision-based 3D object detection. They treat temporal 3D object detection as a multi-view stereo problem, where history frames can be seen as multiple views. A criterion termed as "localization potential" is defined to reflect the level of difficluty for multi-view stereo, upon which they did in-depth analysis and concluded that using long-term, low-resolution temporal context benefits detection.
+
+Based on the analysis, a new 3D object detection method named SOLOFusion is proposed. The core idea is using both long-term and short-term memory. The long-term memory stores low-res features, and is fused by BEV cost volume; the short-term memory stores high-res features from the very last frame, and is fused by plane-sweep cost volume. Experimental results show the proposed method can serve as a new strong baseline. Despite its simplicity, the results are quite impressive, refreshing previous state-of-the-art by a significant margin.
+
+Strength And Weaknesses:
+Strength:
+
+This work borrows a lot of knowledge and tools from multi-view stereo to help us understand and analysis how temporal context should be used for vision-based 3D object detection. Introducing multi-view stereo to 3D object detection is a valuable direction that probably worth much more research, and to my knowledge this work can be seen as one of the few works that open up this direction.
+The analysis based on the proposed "localization potential" well-explained the motivation of using both long-term and short-term memory, and the conclusions shown in Fig.4-6 are quite interesting and inspiring.
+The final method is quite simple, easy to be re-produced.
+Experimental results are very promising, refreshing previous state-of-the-art by a significant margin, showing the importance of using long-temporal context.
+Thorough abation study.
+Weaknesses:
+
+I think the biggest issue is the presentation. I appreciate the dense technical content, which indeed brings difficulty in clarification; But the presentation could definitly be improved. For instance, a reader who has weak background on multi-view stereo may be confusing when discussing the relationship between multi-vew stereo and 3D object detection, since there is little preliminary knowledge introduced in the main text. Maybe it would be better to elaborate more on background, and defer other stuff to the appendices.
+Clarity, Quality, Novelty And Reproducibility:
+Clarity: Accaptable but could be improved. See "weaknesses"
+
+Quality: Good. I will rank this work as the top 20% in the area of 3D object detection.
+
+Novelty: Good. This is one of the few early attempts that successfully employ multi-view stereo for 3D object detection.
+
+Reproducibility: Good. The proposed method is simple and easy to reproduce.
+
+Summary Of The Review:
+In general, this is a good paper that worths acceptance. My biggest concern is the presentation so I give my recommendation as "6: marginally above the acceptance threshold". If the presentation could be improved, I will be willing to raise my rating to "8: accept, good paper".
+
+Review 3:
+Summary Of The Paper:
+This paper makes a systematic study in terms of the critical factors in temporal stereo matching for camera-only 3D object detection and proposes corresponding solutions with a framework, SOLOFusion, to address the problems. It concludes that the limited history usage and low granularity of matching resolution are the two bottlenecks for previous methods, among which the former is more important and can compensate for the latter to some extent. The resulting solution leverages both low-resolution, long-term and high-resolution, short-term information to construct temporal multi-view features effectively and efficiently. It achieves a new SoTA on the nuScenes benchmark. The ablation studies also support the analysis.
+
+Strength And Weaknesses:
+Strengths:
+
+The basic idea is easy to follow and the main motivation is clear.
+The theoretical and empirical analyses are insightful. They can be important supplements for this line of works in the community.
+The conclusion is clear and the paper proposes an efficient way to leverage both conclusions.
+The proposed method achieves strong experiment results, both compared to its baseline and other SoTA methods.
+Some empirical studies are interesting and important for practical use, such as the analysis about balancing temporal fusion and resolution in Table 7.
+Weaknesses:
+
+The analysis part is a little wordy (although I understand it is fruitful, there is no need to clarify such simple conclusions with so many paragraphs) while the methodology part is so brief, even without a figure showing the details of networks. The re-organization of these contents in the main paper and supplemental materials should be considered.
+The technical contribution seems incremental (though it may be related to the presentation problems). The framework seems a simple combination of BEVDepth and BEVStereo/DfM while only adjusting some settings for temporal aggregation. The author should clarify this point more clearly, and add at least a specific figure showing the network architecture as well as the distinguished technical design details.
+As the involved timestep increases, another problem is that the effect of object motion on the stereo matching is more notable. Analysis for this point is missing in this paper. Such problems can severely and intrinsically challenge the conclusion that "long-term matching" is better.
+(Minor) It would be better to have more references at:
+In the first paragraph and the conclusion section, the author mentions that "depth estimation is the main bottleneck of camera-only works". Although it can be common sense for researchers from this community, it would be better to include some references to support such claims.
+In Table 1, it would be better to compare SOLOFusion with a missing reference about the discussion of long-range, "UniFormer: Unified Multi-view Fusion Transformer for Spatial-Temporal Representation in Bird's-Eye-View, Arxiv 2022". Besides, DfM is missing in the MVS part and there is another line of work that is perpendicular to LSS-based, like OFTNet, ImVoxelNet, and MV-FCOS3D++ (which do not predict depth probability for 2D-3D lifting, among them only the last one has temporal modeling).
+(Minor) Minor typos/grammatical mistakes:
+Footnote1, "because it while it is"
+The caption of Figure 4 seems to be covered by Figure 5.
+Clarity, Quality, Novelty And Reproducibility:
+Clarity: Overall good, yet insufficient for network details.
+
+Quality: Overall good.
+
+Novelty: The analysis is novel and solid, but the technical contribution seems incremental.
+
+Reproducibility: The implementation of the temporal setting is easy to reproduce, but the framework is hard to reproduce without further details.
+
+Summary Of The Review:
+This paper formulates the problem of camera-only 3D detection from videos from a temporal multi-view stereo perspective and provides an analysis based on the "localization potential" concept. It results in critical conclusions that the usage of long-term histories and high-resolution features for matching are the most important factors in this setting and proposes corresponding solutions. Experiments show the effectiveness of the proposed approaches and demonstrate their importance in real-time practical use. The main problem is focused on the organization of contents in the main paper and supplemental materials, the incremental technical contribution for framework design, and the missing discussion about object motion. I would recommend weak acceptance at the current stage because it is an important supplement for this line of work and believe it can bring new insight to this community.
+                                    
+Given the above reviews, predict whether this paper will be accepted or rejected. Think step by step and give your final answer.
