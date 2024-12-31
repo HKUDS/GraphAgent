@@ -13,7 +13,7 @@
 ## 📋 To-Do List
 - [x] Release inference code
 - [x] Release model checkpoints
-- [ ] Release training and evaluation data
+- [x] Release training and evaluation datasets
 - [ ] Release training code
 
 ## 🌟 Overview
