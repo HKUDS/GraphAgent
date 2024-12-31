@@ -4,15 +4,11 @@
 
 <h1 align="center">GraphAgent: Agentic Graph Language Assistant</h1>
 
-<div align="center">
-    
-[![Paper](https://img.shields.io/badge/📑_Paper-arXiv-red)](https://arxiv.org/abs/2412.17029)
-[![Model](https://img.shields.io/badge/🤗_Model-HuggingFace-yellow)](https://huggingface.co/GraphAgent/GraphAgent-7B)
-[![GraphTokenizer](https://img.shields.io/badge/🤗_Model-HuggingFace-yellow)](https://huggingface.co/GraphAgent/GraphTokenizer)
-<!-- [![Project Page](https://img.shields.io/badge/🌐_Project-Page-blue)](https://graphagent.github.io) -->
-<!-- [![Dataset](https://img.shields.io/badge/🗂️_Dataset-Download-green)](https://huggingface.co/datasets/graphagent) -->
+<p align="center">
+📖 <a href="https://arxiv.org/abs/2412.17029" target="_blank"> Paper at Arxiv</a> · 🤗 <a href="https://huggingface.co/GraphAgent/GraphAgent-7B" target="_blank">GraphAgent Model</a> · 🤗 <a href="https://huggingface.co/GraphAgent/GraphTokenizer" target="_blank">Graph Tokenizer Model</a> 
+ · 🤗 <a href="https://huggingface.co/datasets/GraphAgent/GraphAgent-Datasets" target="_blank">GraphAgent Datasets</a>
+</p> 
 
-</div>
 
 ## 📋 To-Do List
 - [x] Release inference code
