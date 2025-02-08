@@ -1,0 +1,151 @@
+BBH_movie: 
+  hetero_key_order: ["movie"]
+  graph_data: dataset/BBH_movie/processed_graph_data_dict_In-Context-HGT.pt
+  node_edge_type_emb_dict: dataset/BBH_movie/node_edge_type_emb_dict.pt
+
+NLP_related_works:
+  hetero_key_order: ["paper", "research_background", "research_question", "methodology", "key_results", "keyword"]
+  graph_data: dataset/NLP_related_works/6.processed_graph_data_dict_In-Context-HGT.pt
+  node_edge_type_emb_dict: dataset/meta_dict/nlp_rw/node_edge_type_emb_dict.pt
+
+NLP_related_works_new_batch:
+  hetero_key_order: ["paper", "research_background", "research_question", "methodology", "key_results", "keyword"]
+  graph_data: dataset/NLP_rw_new_batch/instruction/pyg_graphs_final_higpt_emb.pt
+  node_edge_type_emb_dict: dataset/meta_dict/nlp_rw/node_edge_type_emb_dict.pt
+
+DBLP:
+  hetero_key_order: ["author", "paper", "term"]
+  graph_data: dataset/DBLP/DBLP_train_graphs_metahgt_emb.pt
+  node_edge_type_emb_dict: dataset/DBLP/node_edge_type_emb_dict.pt
+
+ACM:
+  hetero_key_order: ["paper", "subject", "term", "author"]
+  graph_data: dataset/ACM/ACM_train_graphs_metahgt_emb.pt
+  node_edge_type_emb_dict: dataset/ACM/node_edge_type_emb_dict.pt
+
+stage_1_dblp_author:
+  hetero_key_order: ["author"]
+  graph_data: dataset/stage_1/instruct_ds_matching_author/train_graphs_metahgt_emb.pt
+  node_edge_type_emb_dict: dataset/DBLP/node_edge_type_emb_dict.pt
+
+stage_1_dblp_paper: 
+  hetero_key_order: ["paper"]
+  graph_data: dataset/stage_1/instruct_ds_matching_paper/train_graphs_metahgt_emb.pt
+  node_edge_type_emb_dict: dataset/DBLP/node_edge_type_emb_dict.pt
+
+stage_1_dblp_node:
+  hetero_key_order: 
+  graph_data: dataset/stage_1/instruct_ds_node_matching_DBLP/train_graphs_metahgt_emb.pt
+  node_edge_type_emb_dict: dataset/DBLP/node_edge_type_emb_dict.pt
+
+stage_1_imdb_node:
+  hetero_key_order: 
+  graph_data: dataset/stage_1/instruct_ds_node_matching_imdb/train_graphs_metahgt_emb.pt
+  node_edge_type_emb_dict: dataset/IMDB/node_edge_type_emb_dict.pt
+
+stage_1_imdb_movie:
+  hetero_key_order: 
+  graph_data: dataset/stage_1/instruct_ds_matching_movie/train_graphs_metahgt_emb.pt
+  node_edge_type_emb_dict: dataset/IMDB/node_edge_type_emb_dict.pt
+
+stage_1_rw_paper:
+  hetero_key_order: ["paper"]
+  graph_data: dataset/NLP_rw_stage_1/instruction_meta_node_paper/pyg_graphs_higpt_emb.pt
+  node_edge_type_emb_dict: dataset/meta_dict/nlp_rw/node_edge_type_emb_dict.pt
+
+stage_1_rw_research_background:
+  hetero_key_order: ["research_background"]
+  graph_data: dataset/NLP_rw_stage_1/instruction_meta_node_research_background/pyg_graphs_higpt_emb.pt
+  node_edge_type_emb_dict: dataset/meta_dict/nlp_rw/node_edge_type_emb_dict.pt
+
+stage_1_rw_research_question:
+  hetero_key_order: ["research_question"]
+  graph_data: dataset/NLP_rw_stage_1/instruction_meta_node_research_question/pyg_graphs_higpt_emb.pt
+  node_edge_type_emb_dict: dataset/meta_dict/nlp_rw/node_edge_type_emb_dict.pt
+
+stage_1_rw_methodology:
+  hetero_key_order: ["methodology"]
+  graph_data: dataset/NLP_rw_stage_1/instruction_meta_node_methodology/pyg_graphs_higpt_emb.pt
+  node_edge_type_emb_dict: dataset/meta_dict/nlp_rw/node_edge_type_emb_dict.pt
+
+stage_1_rw_key_results:
+  hetero_key_order: ["key_results"]
+  graph_data: dataset/NLP_rw_stage_1/instruction_meta_node_key_results/pyg_graphs_higpt_emb.pt
+  node_edge_type_emb_dict: dataset/meta_dict/nlp_rw/node_edge_type_emb_dict.pt
+
+stage_1_rw_node:
+  hetero_key_order: 
+  graph_data: dataset/NLP_rw_stage_1/instruction_meta_node_cross_type/pyg_graphs_higpt_emb.pt
+  node_edge_type_emb_dict: dataset/meta_dict/nlp_rw/node_edge_type_emb_dict.pt
+
+stage_1_pr_paper:
+  hetero_key_order: ["paper"]
+  graph_data: dataset/ICLR_peer_review_stage1/instruct_papers/pyg_graphs_higpt_emb.pt
+  node_edge_type_emb_dict: dataset/meta_dict/iclr_pr/node_edge_type_emb_dict.pt
+
+stage_1_pr_keyword:
+  hetero_key_order: ["keyword"]
+  graph_data: dataset/ICLR_peer_review_stage1/instruct_keywords/pyg_graphs_higpt_emb.pt
+  node_edge_type_emb_dict: dataset/meta_dict/iclr_pr/node_edge_type_emb_dict.pt
+
+stage_1_pr_within:
+  hetero_key_order: 
+  graph_data: dataset/ICLR_peer_review_stage1/instruct_reviews_within/processed_graph_data_dict_In-Context-HGT.pt
+  node_edge_type_emb_dict: dataset/meta_dict/iclr_pr/node_edge_type_emb_dict.pt
+
+stage_1_pr_cross:
+  hetero_key_order: ["review"]
+  graph_data: dataset/ICLR_peer_review_stage1/instruct_reviews_cross/pyg_graphs_higpt_emb.pt
+  node_edge_type_emb_dict: dataset/meta_dict/iclr_pr/node_edge_type_emb_dict.pt
+
+stage_1_sc_paper:
+  hetero_key_order: ["paper"]
+  graph_data: dataset/Arxiv2023_sc_stage_1/instruction_paper/pyg_graphs_higpt_emb.pt
+  node_edge_type_emb_dict: dataset/meta_dict/nlp_rw/node_edge_type_emb_dict.pt
+
+stage_1_sc_research_background:
+  hetero_key_order: ["research_background"]
+  graph_data: dataset/Arxiv2023_sc_stage_1/instruction_research_background/pyg_graphs_higpt_emb.pt
+  node_edge_type_emb_dict: dataset/meta_dict/nlp_rw/node_edge_type_emb_dict.pt
+
+stage_1_sc_research_question:
+  hetero_key_order: ["research_question"]
+  graph_data: dataset/Arxiv2023_sc_stage_1/instruction_research_question/pyg_graphs_higpt_emb.pt
+  node_edge_type_emb_dict: dataset/meta_dict/nlp_rw/node_edge_type_emb_dict.pt
+
+stage_1_sc_methodology:
+  hetero_key_order: ["methodology"]
+  graph_data: dataset/Arxiv2023_sc_stage_1/instruction_methodology/pyg_graphs_higpt_emb.pt
+  node_edge_type_emb_dict: dataset/meta_dict/nlp_rw/node_edge_type_emb_dict.pt
+
+stage_1_sc_key_results:
+  hetero_key_order: ["key_results"]
+  graph_data: dataset/Arxiv2023_sc_stage_1/instruction_key_results/pyg_graphs_higpt_emb.pt
+  node_edge_type_emb_dict: dataset/meta_dict/nlp_rw/node_edge_type_emb_dict.pt
+
+stage_1_sc_cross:
+  hetero_key_order: 
+  graph_data: dataset/Arxiv2023_sc_stage_1/instruction_cross_type/processed_graph_data_dict_In-Context-HGT.pt
+  node_edge_type_emb_dict: dataset/meta_dict/nlp_rw/node_edge_type_emb_dict.pt
+
+ICLR_stage_2:
+  hetero_key_order: 
+  graph_data: dataset/ICLR_peer_review_stage1/instruct_reviews_within/processed_graph_data_dict_In-Context-HGT.pt
+  node_edge_type_emb_dict: dataset/meta_dict/iclr_pr/node_edge_type_emb_dict.pt
+
+Arxiv_stage_2:
+  hetero_key_order: ["paper", "research_background", "research_question", "methodology", "key_results", "keyword"]
+  graph_data: dataset/Arxiv2023_sc_stage_1/instruction_cross_type/processed_graph_data_dict_In-Context-HGT.pt
+  node_edge_type_emb_dict: dataset/meta_dict/nlp_rw/node_edge_type_emb_dict.pt
+
+IMDB_fewshot_train:
+  hetero_key_order:
+  higpt_graph_data: dataset/IMDB_fewshot_train/few_shot_pyg_graphs_higpt_processed.pt
+  skg_graph_data: dataset/IMDB_fewshot_train/processed_graph_data_dict_In-Context-HGT.pt
+  node_edge_type_emb_dict: dataset/IMDB_fewshot_train/node_edge_type_emb_dict.pt
+
+ACM_test_1000:
+  hetero_key_order:
+  higpt_graph_data: dataset/ACM_test_1000/test_pyg_graphs_higpt_processed.pt
+  skg_graph_data: dataset/ACM_test_1000/processed_graph_data_dict_In-Context-HGT.pt
+  node_edge_type_emb_dict: dataset/meta_dict/nlp_rw/node_edge_type_emb_dict.pt
