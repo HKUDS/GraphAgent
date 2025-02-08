@@ -14,7 +14,7 @@
 - [x] Release inference code
 - [x] Release model checkpoints
 - [x] Release training and evaluation datasets
-- [ ] Release training code
+- [x] Release training code
 
 ## 🌟 Overview
 
