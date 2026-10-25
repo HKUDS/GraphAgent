@@ -156,38 +156,38 @@ class HeteroGraphLLMModel(LlamaModel):
                     ).sum():
                         raise ValueError("The number of graph start tokens and graph end tokens should be the same.")
                     graph_start_tokens = torch.where(cur_input_ids == DEFAULT_G_START_TOKEN_ID)[0]
+                    graph_embedding_parts = []
+                    previous_embed_pos = 0
                     for graph_start_token_pos in graph_start_tokens:
                         cur_graph_features = graph_node_features[cur_graph_idx].to(device=cur_input_embeds.device)
                         num_patches = cur_graph_features.shape[0]
                         if cur_input_ids[graph_start_token_pos + num_patches + 1] != DEFAULT_G_END_TOKEN_ID:
                             raise ValueError("The graph end token should follow the graph start token.")
+                        graph_end_token_pos = graph_start_token_pos + num_patches + 1
                         if orig_embeds_params is not None:
-                            cur_new_input_embeds = torch.cat(
+                            graph_embedding_parts.extend(
                                 (
-                                    cur_input_embeds[:graph_start_token_pos].detach(),
+                                    cur_input_embeds[previous_embed_pos:graph_start_token_pos].detach(),
                                     cur_input_embeds[graph_start_token_pos : graph_start_token_pos + 1],
                                     cur_graph_features,
-                                    cur_input_embeds[
-                                        graph_start_token_pos
-                                        + num_patches
-                                        + 1 : graph_start_token_pos
-                                        + num_patches
-                                        + 2
-                                    ],
-                                    cur_input_embeds[graph_start_token_pos + num_patches + 2 :].detach(),
-                                ),
-                                dim=0,
+                                    cur_input_embeds[graph_end_token_pos : graph_end_token_pos + 1],
+                                )
                             )
+                            previous_embed_pos = graph_end_token_pos + 1
                         else:
-                            cur_new_input_embeds = torch.cat(
+                            graph_embedding_parts.extend(
                                 (
-                                    cur_input_embeds[: graph_start_token_pos + 1],
+                                    cur_input_embeds[previous_embed_pos : graph_start_token_pos + 1],
                                     cur_graph_features,
-                                    cur_input_embeds[graph_start_token_pos + num_patches + 1 :],
-                                ),
-                                dim=0,
+                                )
                             )
+                            previous_embed_pos = graph_end_token_pos
                         cur_graph_idx += 1
+                    if orig_embeds_params is not None:
+                        graph_embedding_parts.append(cur_input_embeds[previous_embed_pos:].detach())
+                    else:
+                        graph_embedding_parts.append(cur_input_embeds[previous_embed_pos:])
+                    cur_new_input_embeds = torch.cat(graph_embedding_parts, dim=0)
                     new_input_embeds.append(cur_new_input_embeds)
                 else:
                     cur_graph_features = graph_node_features[cur_graph_idx]
