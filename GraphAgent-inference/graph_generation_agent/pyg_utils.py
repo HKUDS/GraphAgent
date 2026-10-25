@@ -12,8 +12,10 @@ def build_hetero_graph_from_scaffold_keywords_v2(data_dict, add_edges_to_first_s
     scaffold_texts: list[dict] = data_dict.get("scaffold_texts_parsing_output")["scaffold_texts"]
     keywords_of_scaffold_nodes: dict[int, list[dict]] = data_dict.get("keywords")
 
-    for i in range(len(scaffold_nodes)):
-        scaffold_nodes[i]["description"] = scaffold_texts[i]["text"]
+    scaffold_texts_by_id = {item["node_id"]: item["text"] for item in scaffold_texts}
+    scaffold_node_by_id = {node["id"]: node for node in scaffold_nodes}
+    for node_id, node in scaffold_node_by_id.items():
+        node["description"] = scaffold_texts_by_id[node_id]
 
     num_scaffold_nodes = len(scaffold_nodes)
     num_keyword_nodes = sum([len(item) for item in keywords_of_scaffold_nodes.values()])
@@ -65,8 +67,9 @@ def build_hetero_graph_from_scaffold_keywords_v2(data_dict, add_edges_to_first_s
     # edges between anchor_scaffold_nodes and keywords
     for scaffold_node_id, keyword_nodes in keywords_of_scaffold_nodes.items():
         dst_nodes = [item["local_idx"] for item in keyword_nodes]
-        src_nodes = [idx_to_node[scaffold_node_id]["local_idx"]] * len(dst_nodes)
-        meta_path = [idx_to_node[scaffold_node_id]["type"], "has_keyword", "keyword"]
+        scaffold_node = scaffold_node_by_id[scaffold_node_id]
+        src_nodes = [scaffold_node["local_idx"]] * len(dst_nodes)
+        meta_path = [scaffold_node["type"], "has_keyword", "keyword"]
         edges = torch.stack([torch.tensor(src_nodes), torch.tensor(dst_nodes)], dim=0)
         if not hasattr(data[*meta_path], "edge_index"):
             data[*meta_path].edge_index = edges
