@@ -35,16 +35,18 @@ def apply_prompt_template(sources, systems=None):
 
 
 def tokenize_conversations(conversations, tokenizer):
-    input_ids = tokenizer(
+    tokenized = tokenizer(
         conversations,
         return_tensors="pt",
         padding="longest",
         max_length=tokenizer.model_max_length,
         truncation=True,
         add_special_tokens=False # This is important https://github.com/lm-sys/FastChat/pull/3289
-    ).input_ids
+    )
+    input_ids = tokenized.input_ids
+    attention_mask = tokenized.attention_mask
     targets = input_ids.clone()
-    return input_ids, targets
+    return input_ids, targets, attention_mask
 
 
 def get_prompt_separator(conv):
@@ -158,14 +160,14 @@ def preprocess_llama3(
         conversations, conv = apply_prompt_template(sources, systems)
         # print(f"Conversations: {conversations}")
         # print(f"Conv: {conv}")
-        input_ids, targets = tokenize_conversations(conversations, tokenizer)
+        input_ids, targets, attention_mask = tokenize_conversations(conversations, tokenizer)
         targets = mask_targets(conversations, targets, tokenizer, conv)
     else:  # If the data volume is large, use multithreading for processing
         with Pool() as p:
             conversations, conv = p.apply_async(
                 apply_prompt_template, (sources, systems)
             ).get()
-            input_ids, targets = p.apply_async(
+            input_ids, targets, attention_mask = p.apply_async(
                 tokenize_conversations, (conversations, tokenizer)
             ).get()
             targets = p.apply_async(
@@ -177,5 +179,5 @@ def preprocess_llama3(
     return dict(
         input_ids=input_ids,
         labels=targets,
-        attention_mask=input_ids.ne(tokenizer.pad_token_id),
+        attention_mask=attention_mask,
     )

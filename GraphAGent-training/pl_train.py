@@ -153,6 +153,12 @@ class DataCollatorForSupervisedDataset(object):
         input_ids, labels = tuple(
             [instance[key] for instance in instances] for key in ("input_ids", "labels")
         )
+        attention_masks = [
+            instance["attention_mask"]
+            if "attention_mask" in instance
+            else torch.ones_like(instance["input_ids"])
+            for instance in instances
+        ]
         input_ids = torch.nn.utils.rnn.pad_sequence(
             input_ids, batch_first=True, padding_value=self.tokenizer.pad_token_id
         )
@@ -162,7 +168,9 @@ class DataCollatorForSupervisedDataset(object):
         batch = dict(
             input_ids=input_ids,
             labels=labels,
-            attention_mask=input_ids.ne(self.tokenizer.pad_token_id),
+            attention_mask=torch.nn.utils.rnn.pad_sequence(
+                attention_masks, batch_first=True, padding_value=0
+            ),
         )
 
         if "graph_data" in instances[0]:
