@@ -5,4 +5,5 @@ export GRAPH_TOKENIZE_MODEL_PATH="GraphAgent/GraphTokenizer"
 
 PLANNER="deepseek"
 
-python serve_graph_agent.py --planner $PLANNER
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+python "$SCRIPT_DIR/serve_graph_agent.py" --planner "$PLANNER"

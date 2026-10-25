@@ -1,6 +1,5 @@
 import sys
 import os
-from graph_agent import GraphActionAgent
 from utils.storage import mem_store
 from graph_tokenizer.graph_tokenizer import hetero_graph_tokenize
 from graph_action_agent.agent import GraphActionAgent
