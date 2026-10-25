@@ -45,10 +45,11 @@ class GraphActionAgent:
         ]
 
         input_ids = input["input_ids"].to(self.llm.device)
+        attention_mask = input["attention_mask"].to(input_ids.device)
 
         output_ids = self.llm.generate(
                 input_ids,
-                attention_mask=input["attention_mask"],
+                attention_mask=attention_mask,
                 graph_data=input["graph_data"],
                 hetero_key_order = input["hetero_key_order"], 
                 do_sample=True,
