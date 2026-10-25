@@ -32,6 +32,7 @@ def main():
         user_instruction = read_user_instruction(user_input)
 
         res = task_planning_agent.invoke({"input": user_instruction})
+        task_type = res["task_type"]
         print(Fore.GREEN + "TASK PLANNING AGENT: " + str(res) + Style.RESET_ALL)
 
         res = graph_generation_agent.invoke(res)
@@ -44,7 +45,7 @@ def main():
         grounded_graph_with_emb_gnn = hetero_graph_tokenize(grounded_graph)
         
         print(Fore.RED + "INVOKING GRAPH ACTION AGENT... " + Style.RESET_ALL)
-        action_response = graph_action_agent.invoke(user_instruction, grounded_graph_with_emb_gnn, "generative")
+        action_response = graph_action_agent.invoke(user_instruction, grounded_graph_with_emb_gnn, task_type)
         print(Fore.RED + "GRAPH ACTION AGENT: " + str(action_response) + Style.RESET_ALL)
 
 if __name__ == "__main__":
