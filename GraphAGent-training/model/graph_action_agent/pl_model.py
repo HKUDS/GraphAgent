@@ -141,7 +141,9 @@ class GraphAgent_pl(LightningModule):
         ]
 
         optimizer = AdamW(
-            optimizer_grouped_parameters, lr=self.training_args.learning_rate, eps=1e-3
+            optimizer_grouped_parameters,
+            lr=self.training_args.learning_rate,
+            eps=self.training_args.adam_epsilon,
         )
 
         scheduler = get_cosine_schedule_with_warmup(
