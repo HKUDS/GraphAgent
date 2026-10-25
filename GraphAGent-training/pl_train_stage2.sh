@@ -2,7 +2,7 @@
 base_model=/path/to/llama3-8b-instruct
 
 # path to the checkpoint after stage 1 training (alignment)
-pretrain_graph_mlp_adapter=checkpoints/freeze/llama3-8b-higpt-stage1-llama3-MIX-WITH-HiGPT-8192-version_1-epoch=3.bin
+pretrain_graph_mlp_adapter=./checkpoints/higpt-stage1-llama3-MIX-WITH-HiGPT-epoch5-8192/graph_projector.bin
 
 num_epochs=5
 context_len=8192
