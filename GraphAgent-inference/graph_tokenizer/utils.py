@@ -36,8 +36,8 @@ def preprocess_graph_Hetero(
                         replace_token = DEFAULT_G_START_TOKEN + replace_token + DEFAULT_G_END_TOKEN
                     replace_tokens.append(replace_token)
 
-                for i, replace_token in enumerate(replace_tokens):
-                    index = sentence["value"].find(DEFAULT_GRAPH_TOKEN)
+                for replace_token in reversed(replace_tokens):
+                    index = sentence["value"].rfind(DEFAULT_GRAPH_TOKEN)
                     sentence["value"] = sentence["value"][:index] + replace_token + sentence["value"][index+len(DEFAULT_GRAPH_TOKEN):]
 
     return sources
