@@ -53,7 +53,7 @@ class GraphAgent_pl(LightningModule):
             pretrain_graph_mlp_adapter=model_args.pretrain_graph_mlp_adapter,
             fsdp=None,
         )
-        self.model.get_graph_tower().to(dtype=compute_dtype)
+        self.model.get_model().graph_projector.to(dtype=compute_dtype)
 
         data_args.is_graph = True
 
