@@ -128,8 +128,11 @@ class SaveGraphProjectorCallback(Callback):
         self.keys_to_match = keys_to_match
 
     def on_train_epoch_end(self, trainer, pl_module, unused=None):
+        if not trainer.is_global_zero:
+            return
+
         # 准备保存模型权重
-        _state_dict = pl_module.state_dict()
+        _state_dict = pl_module.model.state_dict()
 
         weight_to_save = {}
         for k, v in _state_dict.items():
@@ -153,6 +156,12 @@ class DataCollatorForSupervisedDataset(object):
         input_ids, labels = tuple(
             [instance[key] for instance in instances] for key in ("input_ids", "labels")
         )
+        attention_masks = [
+            instance["attention_mask"]
+            if "attention_mask" in instance
+            else torch.ones_like(instance["input_ids"])
+            for instance in instances
+        ]
         input_ids = torch.nn.utils.rnn.pad_sequence(
             input_ids, batch_first=True, padding_value=self.tokenizer.pad_token_id
         )
@@ -162,7 +171,9 @@ class DataCollatorForSupervisedDataset(object):
         batch = dict(
             input_ids=input_ids,
             labels=labels,
-            attention_mask=input_ids.ne(self.tokenizer.pad_token_id),
+            attention_mask=torch.nn.utils.rnn.pad_sequence(
+                attention_masks, batch_first=True, padding_value=0
+            ),
         )
 
         if "graph_data" in instances[0]:
@@ -339,6 +350,11 @@ def train():
         "16" if training_args.fp16 else ("bf16" if training_args.bf16 else "32")
     )
 
+    projector_callback = SaveGraphProjectorCallback(
+        output_dir=training_args.output_dir,
+        keys_to_match=("graph_projector", "embed_tokens"),
+    )
+
     checkpoint_callback = ModelCheckpoint(
         dirpath=csv_logger.log_dir,
         filename=model_args.model_save_name,
@@ -357,7 +373,7 @@ def train():
         strategy=strategy,
         logger=[csv_logger],
         precision=model_precision,
-        callbacks=[checkpoint_callback],
+        callbacks=[checkpoint_callback, projector_callback],
         reload_dataloaders_every_n_epochs=1,
         log_every_n_steps=10,
     )

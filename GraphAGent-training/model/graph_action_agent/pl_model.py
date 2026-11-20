@@ -1,3 +1,4 @@
+import math
 import torch
 from lightning.pytorch import LightningModule
 from transformers import get_cosine_schedule_with_warmup, AutoConfig
@@ -53,7 +54,7 @@ class GraphAgent_pl(LightningModule):
             pretrain_graph_mlp_adapter=model_args.pretrain_graph_mlp_adapter,
             fsdp=None,
         )
-        self.model.get_graph_tower().to(dtype=compute_dtype)
+        self.model.get_model().graph_projector.to(dtype=compute_dtype)
 
         data_args.is_graph = True
 
@@ -141,13 +142,22 @@ class GraphAgent_pl(LightningModule):
         ]
 
         optimizer = AdamW(
-            optimizer_grouped_parameters, lr=self.training_args.learning_rate, eps=1e-3
+            optimizer_grouped_parameters,
+            lr=self.training_args.learning_rate,
+            eps=self.training_args.adam_epsilon,
         )
+
+        num_training_steps = self.trainer.estimated_stepping_batches
+        num_warmup_steps = self.training_args.warmup_steps
+        if num_warmup_steps == 0:
+            num_warmup_steps = math.ceil(
+                num_training_steps * self.training_args.warmup_ratio
+            )
 
         scheduler = get_cosine_schedule_with_warmup(
             optimizer,
-            num_warmup_steps=self.training_args.warmup_steps,
-            num_training_steps=self.trainer.estimated_stepping_batches,
+            num_warmup_steps=num_warmup_steps,
+            num_training_steps=num_training_steps,
         )
         scheduler = {"scheduler": scheduler, "interval": "step", "frequency": 1}
         return [optimizer], [scheduler]
